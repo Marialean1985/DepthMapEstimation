@@ -48,7 +48,8 @@ parser.add_argument('--ModelPostfix', type=str, default=".h5", help="postfix of 
 parser.add_argument('--NumberOfTestImages', type=int, default=20, help="Percentage of Triantable Layers")
 args=parser.parse_args()
 
-model=CreatErrorMapModel(input_shape=img_dim, lastLayerActivation='tanh')
+#model=CreatErrorMapModel(input_shape=img_dim, lastLayerActivation='tanh')
+model=generator_unet_upsampling(img_dim, bn_mode, batch_size)
 model.load_weights('../../models/'+args.ModelPath+'/'+ args.ModelName+args.ModelPostfix)
 model.save('../../models/'+args.ModelPath+'/'+ "ModelOf"+args.ModelName+args.ModelPostfix)
 
