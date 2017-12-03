@@ -48,13 +48,13 @@ parser.add_argument('--ModelPostfix', type=str, default=".h5", help="postfix of 
 parser.add_argument('--NumberOfTestImages', type=int, default=20, help="Percentage of Triantable Layers")
 args=parser.parse_args()
 
-model=CreatErrorMapModel(input_shape=img_dim)
+model=CreatErrorMapModel(input_shape=img_dim, lastLayerActivation='tanh')
 model.load_weights('../../models/'+args.ModelPath+'/'+ args.ModelName+args.ModelPostfix)
+model.save('../../models/'+args.ModelPath+'/'+ "ModelOf"+args.ModelName+args.ModelPostfix)
 
 imagesPath=os.path.join('../../testResults',args.ModelPath,args.ModelName)
 shutil.rmtree(imagesPath, ignore_errors=True)
 os.makedirs(imagesPath, exist_ok=True)
-
 for i in range(args.NumberOfTestImages):
 	img, dep = next(gen)
 #	cv2.imwrite("real.jpg",img[0]*255)
@@ -64,7 +64,8 @@ for i in range(args.NumberOfTestImages):
 	print (dep.shape)
 	print ("predicted depth:",dmap[0][0])
 	print("image:",img[0][0][0])
-	cv2.imwrite( imagesPath+"/test_%d.jpg" % i,np.hstack(( img[0]*255,np.multiply(dmap,dmap)*125,dep[0]*255)))
+#	cv2.imwrite( imagesPath+"/test_%d.jpg" % i,np.hstack(( img[0]*255,np.multiply(dmap,dmap)*125,dep[0]*255)))
+	cv2.imwrite( imagesPath+"/test_%d.jpg" % i,np.hstack(( img[0]*255,dmap*255,dep[0]*255)))
 #	cv2.imwrite( imagesPath+"/test_%d.jpg" % i,np.hstack(( img[0]*255,dmap*255,dep[0]*255)))
 
 print ("Image to Depth is calculated here")
