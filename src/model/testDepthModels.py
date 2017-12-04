@@ -14,6 +14,7 @@ import os
 import shutil
 import argparse
 
+from keras.models import load_model
 def facades_generator(img_dim_tuple,batch_size=10):
     path = "../../data/nyu_depth_v2_labeled.mat"
     f = h5py.File(path)
@@ -48,9 +49,10 @@ parser.add_argument('--ModelPostfix', type=str, default=".h5", help="postfix of 
 parser.add_argument('--NumberOfTestImages', type=int, default=20, help="Percentage of Triantable Layers")
 args=parser.parse_args()
 
-#model=CreatErrorMapModel(input_shape=img_dim, lastLayerActivation='tanh')
-model=generator_unet_upsampling(img_dim, bn_mode, batch_size)
+model=CreatErrorMapModel(input_shape=img_dim, lastLayerActivation='tanh')
+#model=generator_unet_upsampling(img_dim, bn_mode, batch_size)
 model.load_weights('../../models/'+args.ModelPath+'/'+ args.ModelName+args.ModelPostfix)
+#model = load_model('../../models/'+args.ModelPath+'/'+ args.ModelName+args.ModelPostfix)
 model.save('../../models/'+args.ModelPath+'/'+ "ModelOf"+args.ModelName+args.ModelPostfix)
 
 imagesPath=os.path.join('../../testResults',args.ModelPath,args.ModelName)

@@ -11,7 +11,7 @@ sys.path.append("../utils")
 import general_utils
 import data_utils
 from ErrorMapModel import customLoss
-
+from keras.models import load_model
 def l1_loss(y_true, y_pred):
 #    return K.sum(K.abs(y_pred - y_true), axis=-1)
      print("in loss function shape",y_true.shape)
@@ -60,12 +60,13 @@ def train(**kwargs):
         opt_discriminator = Adam(lr=1E-3, beta_1=0.9, beta_2=0.999, epsilon=1e-08)
 
         # Load generator model
-        generator_model = models.load("generator_unet_%s" % generator,
-                                      img_dim,
-                                      nb_patch,
-                                      bn_mode,
-                                      use_mbd,
-                                      batch_size)
+#        generator_model = models.load("generator_unet_%s" % generator,
+#                                      img_dim,
+#                                      nb_patch,
+#                                      bn_mode,
+#                                      use_mbd,
+#                                      batch_size)
+        generator_model =load_model("/localtmp/Pix2Depth/models/DepthMapwithtanh50UntrOrg/ModelOfDepthMap_weightsBestLoss.h5")
         # Load discriminator model
         discriminator_model = models.load("DCGAN_discriminator",
                                           img_dim_disc,
@@ -104,8 +105,8 @@ def train(**kwargs):
 
             for X_full_batch, X_sketch_batch in data_utils.facades_generator(img_dim,batch_size=batch_size):
 
-                X_gen, X_gen_target = next(data_utils.facades_generator(img_dim,batch_size=batch_size))
-                generator_model.train_on_batch(X_gen, X_gen_target)
+                #X_gen, X_gen_target = next(data_utils.facades_generator(img_dim,batch_size=batch_size))
+                #generator_model.train_on_batch(X_gen, X_gen_target)
                 # Create a batch to feed the discriminator model
                 X_disc, y_disc = data_utils.get_disc_batch(X_full_batch,
                                                            X_sketch_batch,
