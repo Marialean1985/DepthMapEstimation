@@ -11,6 +11,7 @@ import cv2
 import sys
 import numpy as np
 from fromDatasetGenerator import  fDataSet_generator
+from keras.models import load_model
 def div0( a, b ):
     """ ignore / 0, div0( [-1, 0, 1], 0 ) -> [0, 0, 0] """
     with np.errstate(divide='ignore', invalid='ignore'):
@@ -23,8 +24,9 @@ def GeneratorErrorMap(img_dim_tuple,batch_size=10, modelEpoch=130, threshold=0.1
    	path = "../../data/nyu_depth_v2_labeled.mat"
    	f = h5py.File(path)
    gen , length = fDataSet_generator(img_dim, batch_size,f=f)
-   model = generator_unet_upsampling(img_dim, bn_mode, batch_size)
-   model.load_weights('../../models/CNN/pix2depthgen_weights_epoch%d.h5' % modelEpoch) #gen_weights_epoch45.h5
+#   model = generator_unet_upsampling(img_dim, bn_mode, batch_size)
+#   model.load_weights('../../models/CNN/pix2depthgen_weights_epoch%d.h5' % modelEpoch) #gen_weights_epoch45.h5
+   model = load_model("/localtmp/Pix2Depth/models/DepthMapwithtanh50UntrOrg/ModelOfDepthMap_weightsBestLoss.h5")
    def GenFunction():
        while True:
            img, dep = gen.__next__()

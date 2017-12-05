@@ -34,7 +34,7 @@ if __name__ == '__main__':
     parser.add_argument('--batch_size', default=32, type=int, help='Batch size')
     parser.add_argument('--DataSetPath', type=str, default="../../data/nyu_depth_v2_labeled.mat", help="path to dataset")
     parser.add_argument('--lastLayerActivation', type=str, default='hard_sigmoid', help="Activation of the lastLayer")
-    parser.add_argument('--PercentageOfTrianable', type=int, default=70, help="Percentage of Triantable Layers")
+    parser.add_argument('--PercentageOfTrianable', type=int, default=50, help="Percentage of Triantable Layers")
     parser.add_argument('--SpecificPathStr', type=str, default='Org', help="PathStr")
     args = parser.parse_args()
     path = args.DataSetPath
@@ -56,7 +56,7 @@ if __name__ == '__main__':
     nb_train_samples = 2000
     nb_validation_samples = 800
 #    nb_validation_samples = 8
-    epochs = 20
+    epochs = 30
 #    epochs = 1
     batchSize=args.batch_size
 
